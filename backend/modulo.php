@@ -7,29 +7,20 @@ use Phalcon\Mvc\Micro;
 use Phalcon\Events\Manager as EventsManager;
 use Phalcon\DI\FactoryDefault;
 use Phalcon\Mvc\Micro\Collection;
-// use Phalcon\Logger;
-// use Phalcon\Logger\Adapter\File as FileLogger;
+use Phalcon\Logger;
+use Phalcon\Logger\Adapter\File as FileLogger;
 
 class modulo extends Micro
 {
   private $ROOT_PROJECT_PATH;
-
   private $config;
-
   private $module;
-
   private $loader;
-
   private $di;
-
   private $events;
-
   private $services;
-
-  private $eventsManager;
-
+  private $evensManager;
   private $collections = [];
-
   private function validJson($json) {
       json_decode($json);
       return (json_last_error() == JSON_ERROR_NONE);
@@ -37,30 +28,18 @@ class modulo extends Micro
   public function __construct($config)
   {
       $this->ROOT_PROJECT_PATH =__DIR__;
-
       $this->registerLoader();
-
       $this->events = require_once __DIR__ . '/recursos/events.php';
-
       $this->services = require_once __DIR__ . '/recursos/services.php';
-
       $this->registerExceptionHandler();
-
       $this->registerEvents();
-
-
-
-
       $this->registerServices();
       $this->registerConfig($config);
   }
 
   private function registerConfig($config)
   {
-
       $file = "{$this->ROOT_PROJECT_PATH}/configVendimia.json";
-
-
       if (!file_exists($file)) {
 
           throw new \vendimia\Exceptions\HTTPException(
@@ -77,7 +56,6 @@ class modulo extends Micro
       $jsonConfig = file_get_contents($file);
 
       if (!$this->validJson($jsonConfig)) {
-
           throw new \vendimia\Exceptions\HTTPException(
               'Un archivo de configuración no está bien formado.',
               500,
@@ -88,7 +66,6 @@ class modulo extends Micro
               ]
           );
       }
-
       $config = json_decode($jsonConfig);
       $this->di->set('config', function () use ($config) {
           return $config;
@@ -101,9 +78,7 @@ class modulo extends Micro
 
       $this->loader->registerNamespaces(array(
           'vendimia' => __DIR__ . '/',
-        //  'vendimia\Controllers' => __DIR__ . '/controllers/',
           'vendimia\Responses' => __DIR__ . '/recursos/responses/',
-          //'vendimia\Models' => __DIR__ . '/models/',
           'vendimia\Exceptions' => __DIR__ . '/recursos/exceptions/'
       ))->register();
       $this->loader->registerNamespaces(array('vendimia\Controllers' => __DIR__.'/controllers/',
@@ -119,17 +94,13 @@ class modulo extends Micro
   public function registerEvents()
   {
       $this->eventsManager = new EventsManager();
-
       $this->eventsManager->attach('micro:beforeNotFound', $this->events['micro:beforeNotFound']);
-
       $this->eventsManager->attach('micro:afterHandleRoute', $this->events['micro:afterHandleRoute']);
 
   }
 
   public function enterServices() {
-
     $di = \Phalcon\DI::getDefault();
-
     $di->set('conexion', function() use ($di) {
       $config = $di->get('config');
       $host = $config->db->host;
@@ -156,9 +127,7 @@ class modulo extends Micro
 
   private function configureRootPath()
   {
-
       $this->get('/', function () {
-
           if (getenv('PHP_ENV') !== 'production') {
 
               $routes = $this->getRouter()->getRoutes();
@@ -225,25 +194,34 @@ class modulo extends Micro
   }
 
   private function getCollections() {
-    $collection = new Collection();
-    $collection->setPrefix('/api')
-    ->setHandler('\vendimia\Controllers\vendimiaController')
+    $clientes = new Collection();
+    $clientes->setPrefix('/api')
+    ->setHandler('\vendimia\Controllers\clientesController')
     ->setLazy(true);
-    $collection->get("/hola","testController");
-    return [$collection];
+    $clientes->get("/clientes","consultarClientes");
+    $clientes->get("/clientes/{id}","consultarClientesPorID");
+    $clientes->post("/clientes","agregarCliente");
+    $clientes->put("/clientes/{idCliente}","actualizarCliente");
+    $clientes->delete("/clientes/{idCliente}","eliminarCliente");
+
+    $articulos = new Collection();
+    $articulos->setPrefix('/api')
+    ->setHandler('\vendimia\Controllers\articulosController')
+    ->setLazy(true);
+    $articulos->get("/articulos","consultarArticulos");
+    $articulos->get("/articulos/{id}","consultarArticulosPorId");
+    $articulos->post("/articulos","agregarArticulo");
+    $articulos->put("/articulos/{id}","actualizarArticulo");
+    $articulos->delete("/articulos/{id}","eliminarArticulo");
+
+    return [$clientes,$articulos];
   }
 
-  public function run()
-  {
-      $this->setDI($this->di);
-
-      $this->setEventsManager($this->eventsManager);
-
-       $this->configureRootPath();
-
-
-      $this->loadModule();
-
-      $this->handle();
+  public function run() {
+    $this->setDI($this->di);
+    $this->setEventsManager($this->eventsManager);
+    $this->configureRootPath();
+    $this->loadModule();
+    $this->handle();
   }
 }

@@ -1,6 +1,6 @@
 {
-    "name": "proyecto/vendimia",
-    "description": "proyecto para simular una vendimia",
+    "name": "vendimia/rest",
+    "description": "el rest api de vendimia",
     "authors": [
         {
             "name": "christian f garcia",

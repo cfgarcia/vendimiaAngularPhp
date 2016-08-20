@@ -1,22 +1,14 @@
 <?php
-namespace vendimia\Controllers;
+namespace vendimia\Responses;
 use vendimia\Exceptions\HTTPException;
-use vendimia\Models as Modelos;
 
-class vendimiaController extends \Phalcon\Mvc\Controller
+class Respond
 {
-  private $model;
-  public function onConstruct() {
-    $this->model = new Modelos\vendimiaModel();
+  public function __construct() {
+
   }
 
-  public function testController() {
-
-    $consulta = $this->model->consultarCliente();
-
-    return $this->respond(["response"=>$consulta]);
-  }
-  protected function respond($recordsArray)
+  public function respond($recordsArray)
   {
       if (!is_array($recordsArray)) {
           throw new vendimia\Exceptions\HTTPException(
