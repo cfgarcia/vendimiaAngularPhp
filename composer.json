@@ -1,0 +1,11 @@
+{
+    "name": "proyecto/vendimia",
+    "description": "proyecto para simular una vendimia",
+    "authors": [
+        {
+            "name": "christian f garcia",
+            "email": "christian.g.gml@gmail.com"
+        }
+    ],
+    "require": {}
+}
