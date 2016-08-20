@@ -214,7 +214,25 @@ class modulo extends Micro
     $articulos->put("/articulos/{id}","actualizarArticulo");
     $articulos->delete("/articulos/{id}","eliminarArticulo");
 
-    return [$clientes,$articulos];
+    $configuracion = new Collection();
+    $configuracion->setPrefix('/api')
+    ->setHandler('\vendimia\Controllers\configuracionController')
+    ->setLazy(true);
+    $configuracion->get("/configuracion","consultarConfiguarion");
+    $configuracion->post("/configuracion","agregarConfiguracion");
+    $configuracion->put("/configuracion/{id}","actualizarConfiguracion");
+
+    $ventas = new Collection();
+    $ventas->setPrefix('/api')
+    ->setHandler('\vendimia\Controllers\ventasController')
+    ->setLazy(true);
+    $ventas->get("/ventas","consultarVentas");
+    $ventas->get("/ventas/{id}","consultarVentasPorId");
+    $ventas->post("/ventas","agregarVenta");
+    $ventas->put("/ventas/{id}","actualizarVenta");
+    $ventas->delete("/ventas/{id}","eliminarVenta");
+
+    return [$clientes,$articulos,$configuracion,$ventas];
   }
 
   public function run() {

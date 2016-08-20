@@ -4,20 +4,21 @@ use vendimia\Exceptions\HTTPException;
 use vendimia\Models as Modelos;
 use vendimia\Responses as Respuesta;
 
-class articulosController extends \Phalcon\Mvc\Controller
+class ventasController extends \Phalcon\Mvc\Controller
 {
   private $model;
   private $respuesta;
-  
+
   public function onConstruct() {
-    $this->model = new Modelos\articulosModel();
+    $this->model = new Modelos\ventasModel();
+    $this->modelClientes = new Modelos\clientesModel();
     $this->respuesta = new Respuesta\Respond();
   }
 
-  public function consultarArticulos() {
+  public function consultarVentas () {
     $consulta = null;
     try{
-      $consulta = $this->model->consultarArticulos();
+      $consulta = $this->model->consultarVentas();
     } catch(\Exception $e) {
       $mensaje = utf8_encode($e->getMessage());
       throw new \vendimia\Exceptions\HTTPException(
@@ -33,11 +34,11 @@ class articulosController extends \Phalcon\Mvc\Controller
     return $this->respuesta->respond(["response"=>$consulta]);
   }
 
-  public function consultarArticulosPorId ($id) {
+  public function consultarVentasPorId ($id) {
     $consulta = null;
     try{
-      $this->model->setArticuloId($id);
-      $consulta = $this->model->consultarArticulosPorId();
+      $this->model->setIdVenta($id);
+      $consulta = $this->model->consultarVentasPorId($id);
     } catch(\Exception $e) {
       $mensaje = utf8_encode($e->getMessage());
       throw new \vendimia\Exceptions\HTTPException(
@@ -52,23 +53,31 @@ class articulosController extends \Phalcon\Mvc\Controller
     }
     if(empty($consulta)){
       throw new \vendimia\Exceptions\HTTPException(
-              'El cliente Articulo no Existe.',
+              'La venta Solicitada no Existe.',
               500,array()
       );
     }
     return $this->respuesta->respond(["response"=>$consulta]);
   }
 
-  public function agregarArticulo () {
+  public function agregarVenta() {
     $consulta = false;
-    $articulo = null;
+    $ventas = null;
     try{
-      $articulo = $this->request->getJsonRawBody();
-      $this->model->setDesArticulo($articulo->desArticulo);
-      $this->model->setModeloArticulo($articulo->modeloArticulo);
-      $this->model->setPrecioArticulo($articulo->precioArticulo);
-      $this->model->setExistArticulo($articulo->existArticulo);
-      $consulta = $this->model->agregarArticulo();
+      $ventas = $this->request->getJsonRawBody();
+      $this->modelClientes -> setClienteID($ventas->idCliente);
+      $cliente = $this->modelClientes->consultarClientePorId ();
+      if(!empty($cliente)){
+        $this->model->setIdCliente($ventas->idCliente);
+        $this->model->setTotalVenta($ventas->totalVenta);
+        $consulta = $this->model->agregarVenta();
+      } else {
+        throw new \vendimia\Exceptions\HTTPException(
+                'Ese cliente no existe.',
+                500,array()
+        );
+      }
+
     } catch(\Exception $e) {
       $mensaje = utf8_encode($e->getMessage());
       throw new \vendimia\Exceptions\HTTPException(
@@ -90,22 +99,30 @@ class articulosController extends \Phalcon\Mvc\Controller
     return $this->respuesta->respond(["response"=>$consulta]);
   }
 
-  public function actualizarArticulo($idArticulo) {
+  public function actualizarVenta($idVenta) {
     $consulta = null;
-    $articulo = null;
+    $ventas = null;
+    $cliente = null;
     try{
-      $articulo = $this->request->getJsonRawBody();
-      $this->model->setArticuloId($idArticulo);
-      $consulta = $this->model->consultarArticulosPorId();
-      if(!empty($consulta)){
-        $this->model->setDesArticulo($articulo->desArticulo);
-        $this->model->setModeloArticulo($articulo->modeloArticulo);
-        $this->model->setPrecioArticulo($articulo->precioArticulo);
-        $this->model->setExistArticulo($articulo->existArticulo);
-        $consulta = $this->model->actualizarArticulo();
+      $ventas = $this->request->getJsonRawBody();
+      $this->model->setIdVenta($idVenta);
+      $venta = $this->model->consultarVentasPorId();
+      if(!empty($venta)){
+        $this->modelClientes -> setClienteID($ventas->idCliente);
+        $cliente = $this->modelClientes->consultarClientePorId ();
+        if(!empty($cliente)){
+          $this->model->setIdCliente($ventas->idCliente);
+          $this->model->setTotalVenta($ventas->totalVenta);
+          $consulta = $this->model->actualizarVenta();
+        } else {
+          throw new \vendimia\Exceptions\HTTPException(
+                  'Esa cliente no exite no existe.',
+                  500,array()
+          );
+        }
       } else {
         throw new \vendimia\Exceptions\HTTPException(
-                'Ese articulo no existe.',
+                'Esa venta no exite no existe.',
                 500,array()
         );
       }
@@ -124,17 +141,17 @@ class articulosController extends \Phalcon\Mvc\Controller
     return $this->respuesta->respond(["response"=>$consulta]);
   }
 
-  public function eliminarArticulo ($idArticulo) {
+  public function eliminarVenta ($idVenta) {
     $consulta = null;
-    $articulo = null;
+    $venta = null;
     try{
-      $this->model->setArticuloId($idArticulo);
-      $articulo = $this->model->consultarArticulosPorId();
-      if(!empty($articulo)){
-        $consulta = $this->model->eliminarArticulo();
+      $this->model->setIdVenta($idVenta);
+      $venta = $this->model->consultarVentasPorId();
+      if(!empty($venta)){
+        $consulta = $this->model->eliminarVenta();
       } else {
         throw new \vendimia\Exceptions\HTTPException(
-                'Ese Articulo no existe.',
+                'Esa venta no existe.',
                 500,array()
         );
       }
