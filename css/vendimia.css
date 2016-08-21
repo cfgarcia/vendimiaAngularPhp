@@ -1,3 +1,8 @@
 .vendimiaForm {
   margin-top: 1em;
 }
+
+.clientesTable {
+  height: 800px;
+  overflow: auto;
+}
