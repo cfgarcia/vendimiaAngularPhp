@@ -32,7 +32,7 @@ class clientesModel extends Modelo
     $response =array();
     $di = \Phalcon\DI::getDefault();
     $db = $di->get("conexion");
-    $statement = $db -> prepare("SELECT id_cliente,nom_cliente,apellido_paterno,apellido_materno,rfc FROM cat_clientes;");
+    $statement = $db -> prepare("SELECT id_cliente,CONCAT_WS(' ',nom_cliente,apellido_paterno,apellido_materno) as nom_cliente,rfc FROM cat_clientes;");
     $statement -> execute();
     $response = $statement -> fetchAll(\PDO::FETCH_ASSOC);
     return $response;
@@ -42,7 +42,7 @@ class clientesModel extends Modelo
     $response =array();
     $di = \Phalcon\DI::getDefault();
     $db = $di->get("conexion");
-    $statement = $db -> prepare("SELECT id_cliente,nom_cliente,apellido_paterno,apellido_materno,rfc FROM cat_clientes WHERE id_cliente = ?;");
+    $statement = $db -> prepare("SELECT id_cliente,CONCAT_WS(' ',nom_cliente,apellido_paterno,apellido_materno),rfc FROM cat_clientes WHERE id_cliente = ?;");
     $statement->bindParam(1,$this->id_cliente,\PDO::PARAM_INT);
     $statement -> execute();
     $response = $statement -> fetchAll(\PDO::FETCH_ASSOC);

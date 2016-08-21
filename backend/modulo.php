@@ -1,7 +1,7 @@
 <?php
 namespace vendimia;
-ini_set("display_errors","on");
-error_reporting(E_ALL);
+ini_set("display_errors","off");
+
 use Phalcon\Loader;
 use Phalcon\Mvc\Micro;
 use Phalcon\Events\Manager as EventsManager;

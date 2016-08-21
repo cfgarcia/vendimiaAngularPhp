@@ -1,0 +1,52 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-3"><h4>Clientes Registrados</h4></div>
+    <div class="col-lg-9 ">
+      <button type="button" class="btn btn-primary btn-lg pull-right">
+        <span class="glyphicon glyphicon-plus"></span> Agregar Clientes
+      </button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-6">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th width="20%">Clave Cliente</th>
+            <th width="80%">Nombre</th>
+          </tr>
+        </thead>
+          <tr ng-repeat ="cliente in clientes">
+            <td>{{cliente.id_cliente}}</td>
+            <td>{{cliente.nom_cliente}}</td>
+          </tr>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-lg-6">
+      <form class="vendimiaForm" ng-init="infoCliente = {}">
+        <div class="form-group">
+          <label>Nombre</label>
+          <input type="text" maxlength="50" class="form-control" ng-model="infoCliente.nomCliente"  placeholder="Nombre">
+        </div>
+        <div class="form-group">
+          <label>Apellido Paterno</label>
+          <input type="text" maxlength="50" class="form-control" ng-model="infoCliente.apellidoP" placeholder="Apellido Paterno">
+        </div>
+        <div class="form-group">
+          <label>Apellido Materno</label>
+          <input type="text" maxlength="50" class="form-control" ng-model="infoCliente.apellidoM" placeholder="Apellido Materno">
+        </div>
+        <div class="form-group">
+          <label>RFC</label>
+          <input type="text" maxlength="13" class="form-control" ng-model="infoCliente.rfc" placeholder="RFC">
+        </div>
+        <div class="pull-right">
+          <button type="submit" class="btn btn-default">Cancelar</button>
+          <button type="submit" class="btn btn-default" ng-click="guardarCliente()">Guardar</button>
+        </div>
+      </from>
+    </div>
+  </div>
+</div>
