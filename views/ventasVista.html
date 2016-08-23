@@ -1,0 +1,36 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-3"><h4>Ventas Activas</h4></div>
+    <div class="col-lg-9 ">
+      <a href="#venta"><button type="button" class="btn btn-primary btn-lg pull-right">
+        <span class="glyphicon glyphicon-plus"></span> Nueva Venta
+      </button></a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12 tablaPrincipal">
+      <table class="table table-hover" ng-init="traerVentas()">
+        <thead>
+          <tr>
+            <th width="10%">Folio Venta</th>
+            <th width="10%">Clave Cliente</th>
+            <th width="30%">Nombre</th>
+            <th width="20%">Total</th>
+            <th width="20%">Fecha</th>
+            <th width="10%">Estatus</th>
+          </tr>
+        </thead>
+          <tr ng-repeat ="venta in ventas" >
+            <td>{{venta.id_venta}}</td>
+            <td>{{venta.id_cliente}}</td>
+            <td>{{venta.nom_cliente}}</td>
+            <td>{{venta.total_venta}}</td>
+            <td>{{venta.fec_registrada}}</td>
+            <td>{{venta.estatus}}</td>
+          </tr>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

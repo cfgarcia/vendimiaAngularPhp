@@ -9,7 +9,12 @@ var clientesController = angular.module("clientesController",[])
   }
 
   $scope.llenarClienteNuevo = function() {
-    $scope.folio = $scope.clientes.length + 1;
+    try{
+      $scope.folio = parseInt($scope.clientes[Object.keys($scope.clientes)[Object.keys($scope.clientes).length - 1]].id_cliente) + 1;
+    }catch(e){
+      $scope.folio = 1;
+    }
+
     $scope.infoCliente = {};
     $scope.form=true;
     $scope.editar =false;
@@ -35,12 +40,13 @@ var clientesController = angular.module("clientesController",[])
       $scope.form =true;
     });
 
-    $scope.editarCliente = function(){
-      this.infoCliente.idCliente = $scope.folio;
-      clientesServicio.editarCliente(this.infoCliente,function(){
-        $scope.traerClientes();
-        $scope.form =false;
-      });
-    }
+  }
+
+  $scope.editarCliente = function(){
+    this.infoCliente.idCliente = $scope.folio;
+    clientesServicio.editarCliente(this.infoCliente,function(){
+      $scope.traerClientes();
+      $scope.form =false;
+    });
   }
 });

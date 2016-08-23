@@ -29,9 +29,9 @@ class configuracionModel extends Modelo
     $response =array();
     $di = \Phalcon\DI::getDefault();
     $db = $di->get("conexion");
-    $statement = $db -> prepare("SELECT id_conf,tasa_fin,por_enganche,plazo_max FROM cat_configuracion ORDER BY id_conf DESC;");
+    $statement = $db -> prepare("SELECT id_conf,tasa_fin,por_enganche,plazo_max FROM cat_configuracion ORDER BY id_conf DESC limit 1;");
     $statement -> execute();
-    $response = $statement -> fetchAll(\PDO::FETCH_ASSOC);
+    $response = $statement -> fetch(\PDO::FETCH_ASSOC);
     return $response;
   }
 

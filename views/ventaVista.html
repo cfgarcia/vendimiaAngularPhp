@@ -1,0 +1,137 @@
+<div class="container">
+  <div class="row text-right" ng-init="traerConfiguracion()">
+    <h4>Folio Venta {{folio}}</h4>
+  </div>
+  <div class="row" ng-hide="seguimiento">
+    <div class="col-lg-4">
+      <form class="form-inline" ng-init="infoCliente = {}">
+        <div class="form-group" ng-init="traerClientes()" >
+          <label>Cliente</label>
+          <div class="autocomplete">
+            <input type="text" maxlength="50" ng-blur="mostrarclientes()" class="form-control"  placeholder="Buscar Cliente"  ng-model="clienteSeleccionado"  ng-change="buscarCliente()"/>
+            <div ng-hide="!mostrarCliente"   class="list-group dropDownV">
+              <button type="button" class="list-group-item"  ng-repeat="cliente in clientes()" ng-click = "getCliente(cliente)">{{cliente.nom_cliente}}</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="col-lg-4" ng-hide="!infoCliente.rfc">
+      <h4>RFC:{{infoCliente.rfc}}</h4>
+    </div>
+  </div>
+  <div class="row lineContainer" ng-hide="seguimiento">
+    <div class="col-12-lg line"></div>
+  </div>
+  <div class="row" ng-hide="seguimiento">
+    <div class="col-lg-4">
+      <form class="form-inline" ng-init="infoArticulo = {}">
+        <div class="form-group" ng-init="traerArticulos()" >
+          <label>Articulo</label>
+          <div class="autocomplete">
+            <input type="text" maxlength="50" ng-blur="mostrarArticulos()" class="form-control"  placeholder="Buscar Articulo"  ng-model="articuloSeleccionado"  ng-change="buscarArticulo()"/>
+            <div ng-hide="!mostrarArticulo"   class="list-group dropDownV">
+              <button type="button" class="list-group-item"  ng-repeat="articulo in articulos()" ng-click = "getArticulos(articulo)">{{articulo.des_articulo}}</button>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-md" ng-hide="!infoArticulo.des_articulo" ng-click="agregarArticulos()"><span class="glyphicon glyphicon-plus"></span></button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="row lineContainer" ng-hide="seguimiento">
+    <div class="col-12-lg line"></div>
+  </div>
+  <div class="row" ng-hide="seguimiento">
+    <div class="col-lg-12 " ng-init="infoArticulos = []">
+      <table class="table table-hover" >
+        <thead>
+          <tr>
+            <th width="40%">Descripcion Art&iacute;culo</th>
+            <th width="20%">Modelo</th>
+            <th width="10%">Cantidad</th>
+            <th width="10%">Precio</th>
+            <th width="10%">Importe</th>
+            <th width="10%"></th>
+          </tr>
+        </thead>
+          <tr ng-repeat ="articulo in infoArticulos" >
+            <td>{{articulo.des_articulo}}</td>
+            <td>{{articulo.modelo_articulo}}</td>
+            <td><input type="number"  max="999" min="0" step="1" class="form-control" ng-blur="getCantidad(articulo,cantidad)" ng-model="cantidad"></td>
+            <td>{{articulo.precio}}</td>
+            <td>{{articulo.importe}}</td>
+            <td><button ng-click="removerArticulo(articulo,infoArticulos.indexOf(articulo));" class="btn btn-default"><span class="glyphicon glyphicon-remove" ></span></button></td>
+          </tr>
+        <tbody>
+        </tbody>
+      </table>
+      <table class="table table-hover" ng-init="totales = {}">
+        <thead>
+          <tr>
+            <th width="40%"></th>
+            <th width="20%"></th>
+            <th width="10%"></th>
+            <th width="10%"></th>
+            <th width="10%"></th>
+            <th width="10%"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="4" align="right"><label>Engache</label></td>
+            <td>{{totales.enganche}}</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td colspan="4" align="right" ><label>Bonificaci&oacute;n Enganche</label></td>
+            <td>{{totales.bonificacionEnganche}}</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td colspan="4" align="right"><label>Total</label></td>
+            <td>{{totales.total}}</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div  ng-hide="!seguimiento">
+    <div class="row text-center">
+      <h3 >ABONOS MENSUALES</h3>
+    </div>
+    <div class="row">
+      <form>
+        <table class="table table-stripe">
+          <thead>
+            <tr>
+              <th width="20%"></th>
+              <th width="20%"></th>
+              <th width="20%"></th>
+              <th width="20%"></th>
+              <th width="20%"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="infoAbono in infoAbonos">
+              <td><label>{{infoAbono.cantidadAbonos}}</label></td>
+              <td align="left">{{infoAbono.importeAbono}}</td>
+              <td><label>{{infoAbono.totalAPagar}}</label>{{infoAbono.totalPagar}}</td>
+              <td><label>{{infoAbono.seAhorra}}</label>{{infoAbono.importeAhorra}}</td>
+              <td><input type="radio" class="radio" ng-value="infoAbono" ng-model="$parent.abonoSelecionado" /></td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
+  </div>
+  <div class="row">
+    <div class="pull-right">
+      <button type="submit" class="btn btn-default" ng-hide="!seguimiento" ng-click="seguimiento = false" >Cancelar</button>
+      <a href="#ventas" ng-hide="seguimiento"><button type="submit" class="btn btn-default"  >Cancelar</button></a>
+      <button type="submit" class="btn btn-default" ng-click="seguiente()" ng-hide="seguimiento">Siguiente</button>
+      <button type="submit" class="btn btn-default" ng-click="guardarVenta()" ng-hide="!seguimiento">Guardar</button>
+    </div>
+  </div>
+</div>

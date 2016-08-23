@@ -3,23 +3,25 @@
   <head>
     <link type="text/css" rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link type="text/css" rel="stylesheet" href="css/vendimia.css">
+    <link type="text/css" rel="stylesheet" href="css/autocomplete.css">
   </head>
 
   <body ng-app="vendimiaApp">
-    <nav class="navbar navbar-default">
-      <div clas="container-fluid">
+    <nav class="navbar navbar-inverse container">
+      <div clas="container">
         <ul class="nav navbar-nav">
           <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Inicio <span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a href="#">Ventas</a></li>
+              <li><a href="#ventas">Ventas</a></li>
               <li role="separator" class="divider"></li>
               <li><a href="#clientes">Clientes</a></li>
-              <li><a href="#">Art&iacute;culos</a></li>
-              <li><a href="#">Configuraci&oacute;n</a></li>
+              <li><a href="#articulos">Art&iacute;culos</a></li>
+              <li><a href="#configuracion">Configuraci&oacute;n</a></li>
             </ul>
           </li>
         </ul>
+        <p class="navbar-text navbar-right">{{fecha | date:'MM/dd/yyyy @ h:mma'}}</p>
       </div>
     </nav>
     <div ng-view></div>
@@ -28,9 +30,17 @@
     <script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
     <script type="text/javascript" src="node_modules/angular-route/angular-route.min.js"></script>
     <script type="text/javascript" src="node_modules/angular-animate/angular-animate.min.js"></script>
+    <script type="text/javascript" src="directives/autocomplete.js"></script>
     <script type="text/javascript" src="js/notify.min.js"></script>
     <script type="text/javascript" src="app/vendimiaApp.js"></script>
     <script type="text/javascript" src="controllers/clientesController.js"></script>
     <script type="text/javascript" src="services/clientesService.js"></script>
+    <script type="text/javascript" src="controllers/articulosController.js"></script>
+    <script type="text/javascript" src="services/articulosService.js"></script>
+    <script type="text/javascript" src="controllers/configuracionController.js"></script>
+    <script type="text/javascript" src="services/configuracionService.js"></script>
+    <script type="text/javascript" src="controllers/ventasController.js"></script>
+    <script type="text/javascript" src="controllers/ventaController.js"></script>
+    <script type="text/javascript" src="services/ventasService.js"></script>
   </body>
 </html>

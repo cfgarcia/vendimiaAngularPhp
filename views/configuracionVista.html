@@ -1,0 +1,24 @@
+<div class="container">
+  <div class="col-lg-12" ng-init="traerConfiguracion()">
+    <form name="myForm" class="vendimiaForm" ng-init="infoConfiguracion = {};">
+
+      <div class="form-group">
+        <label>Tasa Financiamiento</label>
+        <input type="number" max="99999.99" min="0" maxlength="5" step="0.01"   class="form-control" ng-model="infoConfiguracion.tasaFin" placeholder="Tasa Financiamiento">
+      </div>
+      <div class="form-group">
+        <label>% Enganche</label>
+        <input type="number" max="100" min="0" maxlength="12" step="0.01"   class="form-control" ng-model="infoConfiguracion.porEnganche" placeholder="% Enganche">
+      </div>
+      <div class="form-group">
+        <label>Plazo M&aacute;ximo</label>
+        <input type="number"  max="999" min="0" step="1" class="form-control"  ng-model="infoConfiguracion.plazoMax" placeholder="Plazo M&aacute;ximo">
+      </div>
+      <div class="pull-right">
+        <a href="#"><button type="submit" class="btn btn-default">Cancelar</button></a>
+        <button type="submit" class="btn btn-default" ng-click="guardarConfiguracion()"  ng-hide="editar">Guardar</button>
+        <button type="submit" class="btn btn-default" ng-click="editarConfiguracion()" ng-show="editar">Editar</button>
+      </div>
+    </from>
+  </div>
+</div>

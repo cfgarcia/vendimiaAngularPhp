@@ -2,7 +2,58 @@
   margin-top: 1em;
 }
 
-.clientesTable {
+.tablaPrincipal {
   height: 800px;
   overflow: auto;
+  direction: ltr;
+}
+
+.tablaPrincipalLeftScroll {
+  height: 800px;
+  overflow: auto;
+  direction: rtl;
+}
+
+.tablaPrincipal table{
+    direction:ltr;
+}
+
+.line{
+  width: 100%;
+  height: 20px;
+  border-bottom: 1px solid black;
+  position: relative;
+}
+
+
+.lineContainer{
+  height: 25px;
+  margin-bottom: 15px;
+}
+
+.dropDownV{
+  height: 200px;
+  margin-bottom: 5px;
+  overflow: auto;
+
+}
+
+.autocomplete div{
+  position: absolute;
+  left: 0;
+  width: 100%;
+  border-left: 1px solid #888;
+  border-right: 1px solid #888;
+  border-bottom: 1px solid #888;
+  border-radius: 5px;
+  z-index: 1;
+  background-color: white;
+}
+
+.autocomplete button{
+  text-align: left;
+  list-style:none;
+  width: 100%;
+  padding:0.4em;
+  background-color: #fff;
 }
